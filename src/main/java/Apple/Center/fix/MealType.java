@@ -1,6 +1,6 @@
 package Apple.Center.fix;
 
-public enum Meal {
+public enum MealType {
     INSIDE,
     OUTSIDE
 }

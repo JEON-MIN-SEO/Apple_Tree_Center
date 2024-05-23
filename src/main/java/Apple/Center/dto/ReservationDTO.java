@@ -1,6 +1,6 @@
 package Apple.Center.dto;
 
-import Apple.Center.fix.Meal;
+import Apple.Center.fix.MealType;
 import Apple.Center.fix.ReservationType;
 import lombok.*;
 
@@ -15,13 +15,15 @@ import java.time.LocalTime;
 @AllArgsConstructor //모든 필드를 매개변수로 하는 생성자
 public class ReservationDTO {
     private Long id;
-    private Long elderly_id;
-    private String guardian_relation;
+    private Long elderlyId; // ElderlyDTO.id
+    private String name; // ElderlyDTO.name
+    private int floor; // ElderlyDTO.floor
+    private String guardianRelation;
     private ReservationType type;
-    private LocalDate reservation_date;
-    private LocalTime reservation_time;
-    private Meal meal;
+    private LocalDate reservationDate;
+    private LocalTime reservationTime;
+    private MealType meal;
     private String request;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
