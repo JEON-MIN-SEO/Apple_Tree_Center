@@ -6,11 +6,32 @@ import Apple.Center.repository.ElderlyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ElderlyService {
 
     @Autowired
     private ElderlyRepository elderlyRepository;
+
+    //모든 어르신 명부 확인
+    public List<ElderlyDTO> findAllElderly() {
+        return elderlyRepository.findAll().stream()
+                .map(elderly -> new ElderlyDTO(
+                        elderly.getId(),
+                        elderly.getName(),
+                        elderly.getFloor()))
+                .collect(Collectors.toList());
+    }
+
+    public ElderlyDTO findElderlyByName(String name) {
+        ElderlyEntity elderly = elderlyRepository.findByName(name);
+        if (elderly != null) {
+            return new ElderlyDTO(elderly.getId(), elderly.getName(), elderly.getFloor());
+        }
+        return null;
+    }
 
     //조회
     public ElderlyDTO findElderlyById(Long id) {

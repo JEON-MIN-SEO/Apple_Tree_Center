@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository //시작일 ~ 끝나는일
-public interface ReservationRepository extends JpaRepository<ReservationDTO, Long> {
+public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
     List<ReservationEntity> findByReservationDateBetween(LocalDate startDate, LocalDate endDate);
+    List<ReservationEntity> findByReservationDate(LocalDate date);
+    List<LocalDate> findUnavailableDates(LocalDate startDate, LocalDate endDate);
 }

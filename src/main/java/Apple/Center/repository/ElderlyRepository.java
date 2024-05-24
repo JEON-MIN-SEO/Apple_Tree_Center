@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ElderlyRepository extends JpaRepository<ElderlyEntity,Long> {
+    ElderlyEntity findByName(String name);
 }
