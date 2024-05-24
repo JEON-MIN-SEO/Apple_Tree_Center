@@ -8,6 +8,7 @@ import Apple.Center.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -95,16 +96,18 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
-
-    public List<LocalDate> getAvailableDates(LocalDate today) {
+    public List<LocalDate> getAvailableDates(LocalDate today, int floor, ReservationType type) {
         LocalDate startDate = today.plusDays(1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
         List<LocalDate> allDates = startDate.datesUntil(endDate.plusDays(1)).collect(Collectors.toList());
 
         List<LocalDate> unavailableDates = reservationRepository.findUnavailableDates(startDate, endDate);
+        DayOfWeek bathDay = getBathDayByFloor(floor);
 
         return allDates.stream()
                 .filter(date -> !unavailableDates.contains(date))
+                .filter(date -> date.getDayOfWeek() != bathDay)
                 .collect(Collectors.toList());
     }
 
@@ -124,6 +127,16 @@ public class ReservationService {
             return outingTimes.stream()
                     .filter(time -> reservations.stream().filter(r -> r.getType() == ReservationType.OUTING && r.getReservationTime().equals(time)).count() < 2)
                     .collect(Collectors.toList());
+        }
+    }
+
+    private DayOfWeek getBathDayByFloor(int floor) {
+        switch (floor) {
+            case 1: return DayOfWeek.MONDAY;
+            case 2: return DayOfWeek.TUESDAY;
+            case 3: return DayOfWeek.WEDNESDAY;
+            case 4: return DayOfWeek.THURSDAY;
+            default: throw new IllegalArgumentException("Invalid floor: " + floor);
         }
     }
 }

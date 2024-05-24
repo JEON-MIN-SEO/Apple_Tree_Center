@@ -22,8 +22,10 @@ public class ReservationAvailabilityController {
     private ReservationService reservationService;
 
     @GetMapping("/dates")
-    public ResponseEntity<List<LocalDate>> getAvailableDates(@RequestParam("today") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate today) {
-        List<LocalDate> availableDates = reservationService.getAvailableDates(today);
+    public ResponseEntity<List<LocalDate>> getAvailableDates(@RequestParam("today") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate today,
+                                                             @RequestParam("floor") int floor,
+                                                             @RequestParam("type") ReservationType type) {
+        List<LocalDate> availableDates = reservationService.getAvailableDates(today, floor, type);
         return ResponseEntity.ok(availableDates);
     }
 
